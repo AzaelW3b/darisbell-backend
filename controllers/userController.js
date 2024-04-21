@@ -37,6 +37,43 @@ export const createUser = async (req, res) => {
     }
 }
 
+export const editUser = async (req, res) => {
+    try {
+        const newUser = {}
+
+        let existingUser = await User.findById(req.params.id)
+        if (!existingUser) {
+            return res.status(404).json({ msg: 'Usuario no encontrado' })
+        }
+        Object.entries(req.body).forEach(([key, value]) => {
+            if (value) {
+                newUser[key] = value
+            }
+        })
+        existingUser = await User.findByIdAndUpdate({ _id: req.params.id }, { $set: newUser }, { new: true })
+        res.json(existingUser)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Hubo un error al editar el usuario')
+    }
+}
+
+export const deleteUsuarios = async (req, res) => {
+    try {
+        const usuarios = await User.findById(req.params.id)
+
+        if (!usuarios) {
+            return res.status(404).json({ msg: 'Usuario no encontrado' })
+        }
+        await User.findByIdAndDelete(req.params.id)
+        res.json({ msg: 'Se elimino el usuario de manera correcta' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Hubo un error al eliminar el usuario')
+    }
+}
+
 
 export const authUser = async (req, res) => {
     try {
