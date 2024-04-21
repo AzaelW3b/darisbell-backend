@@ -49,9 +49,9 @@ export const editarProducto = async (req, res) => {
 
 export const deleteProductos = async (req, res) => {
     try {
-        const Productos = await Productos.findById(req.params.id)
+        const productosIndex = await Productos.findById(req.params.id)
 
-        if (!Productos) {
+        if (!productosIndex) {
             return res.status(404).json({ msg: 'Producto no encontrado' })
         }
         await Productos.findByIdAndDelete(req.params.id)
