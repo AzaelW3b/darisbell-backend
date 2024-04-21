@@ -1,6 +1,18 @@
 import User from "../models/User.js"
 import generateJwt from "../helpers/generateJwt.js"
 
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find({})
+        if (users.length === 0) {
+            return res.status(400).json({ msg: 'No hay usuarios registrados' })
+        }
+        res.json(users)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const createUser = async (req, res) => {
     const { email, userName } = req.body
 
